@@ -2,14 +2,19 @@
 {% extends "base.html" %}
 
 {% block content %}
-  {% for birthday in birthdays %}
-      <div>
+    {% for birthday in birthdays %}
         <div>
-            {{ birthday.first_name }} {{ birthday.last_name }} - {{ birthday.birthday }}
+            <div>
+                {{ birthday.first_name }} {{ birthday.last_name }} - {{ birthday.birthday }}
+            </div>
+            <div>
+                <a href="{% url 'birthday:edit' birthday.id %}">Изменить запись</a>
+                <a href="{% url 'birthday:delete' birthday.id %}">Удалить запись</a>
+            </div>
+
+            {% if not forloop.last %}
+                <hr>
+            {% endif %}
         </div>
-        {% if not forloop.last %}
-            <hr>
-        {% endif %}
-      </div>
-  {% endfor %}
+    {% endfor %}
 {% endblock %}
