@@ -1,4 +1,5 @@
 # birthday/views.py
+from django.shortcuts import get_object_or_404
 from django.views.generic import (
     CreateView, DeleteView, DetailView, ListView, UpdateView
 )
@@ -16,6 +17,13 @@ from django.http import HttpResponse
 def simple_view(request):
     return HttpResponse('Страница для залогиненных пользователей!')
 
+class AccessRightsMixin:
+    def dispatch(self, request, *args, **kwargs):
+        # Получаем объект по первичному ключу и автору или вызываем 404 ошибку.
+        get_object_or_404(Birthday, pk=kwargs['pk'], author=request.user)
+        # Если объект был найден, то вызываем родительский метод,
+        # чтобы работа CBV продолжилась.
+        return super().dispatch(request, *args, **kwargs)
 
 class BirthdayListView(ListView):
     model = Birthday
@@ -27,13 +35,19 @@ class BirthdayCreateView(LoginRequiredMixin, CreateView):
     model = Birthday
     form_class = BirthdayForm
 
+    def form_valid(self, form):
+        # Присвоить полю author объект пользователя из запроса.
+        form.instance.author = self.request.user
+        # Продолжить валидацию, описанную в форме.
+        return super().form_valid(form)
 
-class BirthdayUpdateView(LoginRequiredMixin, UpdateView):
+
+class BirthdayUpdateView(AccessRightsMixin, LoginRequiredMixin, UpdateView):
     model = Birthday
     form_class = BirthdayForm
 
 
-class BirthdayDeleteView(LoginRequiredMixin, DeleteView):
+class BirthdayDeleteView(LoginRequiredMixin, DeleteView, AccessRightsMixin):
     model = Birthday
     success_url = reverse_lazy('birthday:list')
 
