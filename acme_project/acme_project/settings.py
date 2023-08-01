@@ -7,9 +7,10 @@ SECRET_KEY = 'django-insecure-m&$lzdzkutvrbr5vt=jpm)7#g7cken_tk%($ty+w902n7wb#=e
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'localhost',
     '127.0.0.1',
 ]
+
+
 
 INSTALLED_APPS = [
     'django_bootstrap5',
@@ -22,6 +23,7 @@ INSTALLED_APPS = [
     'birthday.apps.BirthdayConfig',
     'pages.apps.PagesConfig',
     'core.apps.CoreConfig',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -32,6 +34,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+]
+
+INTERNAL_IPS = [
+'127.0.0.1',
 ]
 
 ROOT_URLCONF = 'acme_project.urls'
