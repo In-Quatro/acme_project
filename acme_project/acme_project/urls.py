@@ -6,6 +6,8 @@ from django.contrib.auth.forms import UserCreationForm
 from django.views.generic.edit import CreateView
 from django.urls import include, path, reverse_lazy
 
+handler404 = 'core.views.page_not_found'
+
 urlpatterns = [
     path('', include('pages.urls')),
     path('auth/', include('django.contrib.auth.urls')),
@@ -21,3 +23,5 @@ urlpatterns = [
     path('birthday/', include('birthday.urls')),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+

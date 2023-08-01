@@ -47,7 +47,7 @@ class BirthdayUpdateView(AccessRightsMixin, LoginRequiredMixin, UpdateView):
     form_class = BirthdayForm
 
 
-class BirthdayDeleteView(LoginRequiredMixin, DeleteView, AccessRightsMixin):
+class BirthdayDeleteView(AccessRightsMixin, LoginRequiredMixin, DeleteView, ):
     model = Birthday
     success_url = reverse_lazy('birthday:list')
 
